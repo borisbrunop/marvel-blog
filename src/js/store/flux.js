@@ -3,15 +3,16 @@ import Cookies from "universal-cookie";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			prueba: "",
-			favs: "",
-			search: "",
+			prueba: [],
+			favs: [],
+			search: [],
 			loadingSearch: false,
 			loadingComics: false,
-			details: "",
-			comics: "",
+			details: {},
+			comics: [],
 			comicDetails: "",
-			errorCharacter: ""
+			errorCharacter: "",
+			errorComic: ""
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -26,10 +27,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let publicKey = "56073926faf85360cfaddcda6c15057f";
 				let hash = md5(ts + privKey + publicKey);
 				setStore({
-					prueba: "",
+					prueba: [],
 					loadingSearch: false,
-					comics: "",
-					details: "",
+					comics: [],
+					details: {},
 					comicDetails: ""
 				});
 				if (store.search != "") {
@@ -114,9 +115,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let publicKey = "56073926faf85360cfaddcda6c15057f";
 				let hash = md5(ts + privKey + publicKey);
 				setStore({
-					details: "",
+					details: {},
 					comicDetails: "",
-					prueba: "",
+					prueba: [],
 					errorCharacter: ""
 				});
 				Axios.get("https://gateway.marvel.com/v1/public/characters", {
@@ -156,7 +157,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let publicKey = "56073926faf85360cfaddcda6c15057f";
 				let hash = md5(ts + privKey + publicKey);
 				setStore({
-					comics: "",
+					comics: [],
 					loadComics: false,
 					errorComic: ""
 				});
@@ -199,7 +200,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let publicKey = "56073926faf85360cfaddcda6c15057f";
 				let hash = md5(ts + privKey + publicKey);
 				setStore({
-					comics: "",
+					comics: [],
 					loadComics: false
 				});
 				Axios.get("https://gateway.marvel.com/v1/public/comics/" + id, {
