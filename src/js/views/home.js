@@ -132,7 +132,7 @@ export const Home = () => {
 
 	return (
 		<>
-			<div className="m-5 d-flex">
+			<div className="mx-md-5 my-5 mx-2 d-flex">
 				<TextField
 					value={store.search}
 					onChange={e => actions.changeSearch(e.target.value)}
