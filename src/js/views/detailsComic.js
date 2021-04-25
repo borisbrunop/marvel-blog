@@ -110,14 +110,22 @@ export default function DetailsComic() {
 								store.comicDetails.urls.map((value, id) => {
 									if (value.type === "detail") {
 										return (
-											<Button key={id} className="mx-4 my-3" color="secondary">
+											<Button
+												onClick={e => window.open(value.url)}
+												key={id}
+												className="mx-4 my-3"
+												color="secondary">
 												Details on marvel
 											</Button>
 										);
 									}
 									if (value.type === "inAppLink") {
 										return (
-											<Button key={id} className="mx-4 my-3" color="secondary">
+											<Button
+												onClick={e => window.open(value.url)}
+												key={id}
+												className="mx-4 my-3"
+												color="secondary">
 												App link
 											</Button>
 										);
