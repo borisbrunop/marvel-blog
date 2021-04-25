@@ -267,7 +267,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const cookies = new Cookies();
 				const favsCookies = cookies.get("favs");
 				let fav = favsCookies;
-				console.log(fav);
 				if (!favsCookies) {
 					cookies.set("favs", []);
 					setStore({
