@@ -1,15 +1,183 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
+import { Context } from "../store/appContext";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import StarOutlineIcon from "@material-ui/icons/StarOutline";
+import StarIcon from "@material-ui/icons/Star";
+import IconButton from "@material-ui/core/IconButton";
+import clsx from "clsx";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { useHistory } from "react-router-dom";
+import { createMuiTheme } from "@material-ui/core/styles";
+import Cookies from "universal-cookie";
+import Star from "./star";
+import Snackbar from "@material-ui/core/Snackbar";
+import CloseIcon from "@material-ui/icons/Close";
 
-export const Home = () => (
-	<div className="text-center mt-5">
-		<h1>Hello Rigo!</h1>
-		<p>
-			<img src={rigoImage} />
-		</p>
-		<a href="#" className="btn btn-success">
-			If you see this green button, bootstrap is working
-		</a>
-	</div>
-);
+const custome = createMuiTheme({
+	breakpoints: {
+		values: {
+			smCellphone: 0,
+			lgCellphone: 375,
+			tablet: 600,
+			pc: 960,
+			lgPc: 1280,
+			xlPc: 1920
+		}
+	}
+});
+
+const useStyles = makeStyles(theme => ({
+	media: {
+		height: "350px",
+		width: "100%",
+		flexDirection: "column",
+		display: "flex"
+	},
+	container: {
+		height: "100%",
+		overflowY: "scroll",
+		padding: "0px",
+		marginInline: "auto"
+	},
+	name: {
+		margin: "0px",
+		backgroundImage: "linear-gradient(transparent, black)",
+		fontSize: "15px",
+		height: "63px",
+		width: "100%",
+		paddingLeft: "10px",
+		alignItems: "center",
+		display: "flex",
+		color: "#ededed",
+		cursor: "pointer"
+	},
+	margin: {
+		margin: theme.spacing(1)
+	},
+	textField: {
+		width: "100%"
+	},
+	favButton: {
+		marginLeft: "auto",
+		marginBottom: "240px",
+		color: "#ededed"
+	},
+	progress: {
+		width: "100%",
+		height: "100%",
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center"
+	}
+}));
+
+export const Home = () => {
+	const { store, actions } = useContext(Context);
+	const classes = useStyles();
+	const history = useHistory();
+	const cookies = new Cookies();
+	const [open, setOpen] = React.useState(false);
+
+	const handleClose = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+
+		setOpen(false);
+	};
+
+	useEffect(() => {
+		actions.loadFavs();
+		setOpen(true);
+	}, []);
+
+	useEffect(
+		() => {
+			actions.loadSomeData();
+		},
+		[store.search]
+	);
+
+	return (
+		<>
+			<div className="m-5">
+				<TextField
+					value={store.search}
+					onChange={e => actions.changeSearch(e.target.value)}
+					id="outlined-start-adornment"
+					className={clsx(classes.margin, classes.textField)}
+					InputProps={{
+						startAdornment: (
+							<InputAdornment position="start">
+								<SearchIcon />
+							</InputAdornment>
+						)
+					}}
+					variant="outlined"
+				/>
+			</div>
+			<Snackbar
+				anchorOrigin={{
+					vertical: "bottom",
+					horizontal: "left"
+				}}
+				open={open}
+				autoHideDuration={7000}
+				onClose={handleClose}
+				message="This site is currently using Cookies"
+				action={
+					<>
+						<IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+							<CloseIcon fontSize="small" />
+						</IconButton>
+					</>
+				}
+			/>
+			{store.loadingSearch ? (
+				<>
+					{store.prueba ? (
+						<div className={classes.container + " container-fluid d-flex justify-content-center row"}>
+							{store.prueba &&
+								store.prueba.map((character, id) => (
+									<div key={id} className="col-12 p-0 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+										<Card className={classes.root + " m-2 m-xl-1"}>
+											<CardMedia
+												className={classes.media}
+												image={character.path}
+												title={character.name}>
+												<Star characterName={character.name} />
+												<Typography
+													onClick={e => history.push(`/details/${character.name}`)}
+													className={classes.name + " pt-0 pt-lg-1 pt-xl-2"}
+													gutterBottom
+													variant="h5"
+													component="h5">
+													{character.name}
+												</Typography>
+											</CardMedia>
+										</Card>
+									</div>
+								))}
+						</div>
+					) : (
+						<div className={classes.progress}>
+							<h3>Not Found</h3>
+						</div>
+					)}
+				</>
+			) : (
+				<div className={classes.progress}>
+					<CircularProgress />
+				</div>
+			)}
+		</>
+	);
+};
