@@ -12,7 +12,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			comics: [],
 			comicDetails: "",
 			errorCharacter: "",
-			errorComic: ""
+			errorComic: "",
+			favsExists: false
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -265,19 +266,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 			loadFavs: () => {
 				const cookies = new Cookies();
 				const favsCookies = cookies.get("favs");
-				setStore({
-					favs: [...favsCookies]
-				});
+				let fav = favsCookies;
+				console.log(fav);
+				if (!favsCookies) {
+					cookies.set("favs", []);
+					setStore({
+						favs: [],
+						favsExists: false
+					});
+				} else {
+					setStore({
+						favs: [...favsCookies],
+						favsExists: true
+					});
+				}
 			},
 			favCharacter: character => {
 				const cookies = new Cookies();
 				const store = getStore();
 				const favsCookies = cookies.get("favs");
-				let repeated = favsCookies.find(Name => Name == character);
+				let repeated = store.favs.find(Name => Name == character);
 				if (repeated === undefined) {
 					cookies.set("favs", [...favsCookies, character]);
 					setStore({
-						favs: [...favsCookies, character]
+						favs: [...favsCookies, character],
+						favsExists: true
 					});
 				} else {
 					console.log("esta reperito");
@@ -286,8 +299,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			deleteFavCharacter: id => {
 				const cookies = new Cookies();
-				const favsCookies = cookies.get("favs");
 				const store = getStore();
+				const favsCookies = cookies.get("favs");
+				console.log(store.favs.length);
+				console.log(favsCookies.length);
+				if (favsCookies.length === 1) {
+					cookies.set("favs", "not");
+					setStore({
+						favs: [],
+						favsExists: false
+					});
+				}
 				let finishFavsCookies = favsCookies.filter((fav, i) => i != id);
 				setStore({
 					favs: [...finishFavsCookies]

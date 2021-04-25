@@ -61,6 +61,7 @@ export default function DetailsComic() {
 	const history = useHistory();
 
 	useEffect(() => {
+		actions.loadFavs();
 		actions.comicDetails(id);
 	}, []);
 	return (

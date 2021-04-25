@@ -114,6 +114,7 @@ export default function Details() {
 	const history = useHistory();
 
 	useEffect(() => {
+		actions.loadFavs();
 		actions.detailsModule(name);
 	}, []);
 

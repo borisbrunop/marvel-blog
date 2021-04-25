@@ -25,7 +25,7 @@ export default function Star(characterName) {
 	const { store, actions } = useContext(Context);
 	const cookies = new Cookies();
 	const favsCookies = cookies.get("favs");
-	let repeated = favsCookies.find(Name => Name == characterName.characterName);
+	let repeated = store.favs.find(Name => Name == characterName.characterName);
 	if (repeated) {
 		const id = favsCookies.findIndex(Name => Name === characterName.characterName);
 		return (
