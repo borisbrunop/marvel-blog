@@ -1,13 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import rigoImage from "../../img/rigo-baby.jpg";
+import React, { useContext, useEffect } from "react";
 import "../../styles/home.scss";
 import { Context } from "../store/appContext";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import StarOutlineIcon from "@material-ui/icons/StarOutline";
-import StarIcon from "@material-ui/icons/Star";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
 import TextField from "@material-ui/core/TextField";
@@ -17,7 +14,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { useHistory } from "react-router-dom";
 import { createMuiTheme } from "@material-ui/core/styles";
 import Cookies from "universal-cookie";
-import Star from "./star";
+import Star from "../component/star";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -83,7 +80,6 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 	const classes = useStyles();
 	const history = useHistory();
-	const cookies = new Cookies();
 	const [open, setOpen] = React.useState(false);
 
 	const handleClose = (event, reason) => {

@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "universal-cookie";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
 	favButton: {
@@ -20,7 +20,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Star(characterName) {
-	const location = useLocation();
 	const { name } = useParams();
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,7 +7,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { createMuiTheme } from "@material-ui/core/styles";
-import Star from "./star";
+import Star from "../component/star";
 
 const custome = createMuiTheme({
 	breakpoints: {
