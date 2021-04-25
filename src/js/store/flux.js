@@ -131,7 +131,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 					.then(function(response) {
 						let det = response.data.data.results[0];
-						console.log(det);
 						if (!det) {
 							setStore({
 								errorCharacter: "Character not found"
@@ -166,7 +165,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				for await (let comic of comicsUrls) {
 					let arrayUrl = comic.resourceURI.split("/");
 					let url = "https://gateway.marvel.com/v1/public/comics/";
-					console.log(arrayUrl[6]);
 					Axios.get(`${url}${arrayUrl[6]}`, {
 						params: {
 							apikey: publicKey,
