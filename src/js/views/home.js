@@ -17,6 +17,7 @@ import Cookies from "universal-cookie";
 import Star from "../component/star";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
+import RefreshIcon from "@material-ui/icons/Refresh";
 
 const custome = createMuiTheme({
 	breakpoints: {
@@ -80,6 +81,9 @@ const useStyles = makeStyles(theme => ({
 	textField: {
 		width: "100%"
 	},
+	refresh: {
+		color: "#ea2323"
+	},
 	progress: {
 		width: "100%",
 		height: "100%",
@@ -121,9 +125,14 @@ export const Home = () => {
 		[store.search]
 	);
 
+	const handleRefresh = () => {
+		const editedText = store.search.slice(0, -1);
+		actions.changeSearch(editedText);
+	};
+
 	return (
 		<>
-			<div className="m-5">
+			<div className="m-5 d-flex">
 				<TextField
 					value={store.search}
 					onChange={e => actions.changeSearch(e.target.value)}
@@ -138,6 +147,9 @@ export const Home = () => {
 					}}
 					variant="outlined"
 				/>
+				<IconButton className={classes.refresh} onClick={e => handleRefresh()} aria-label="delete">
+					<RefreshIcon />
+				</IconButton>
 			</div>
 			<Snackbar
 				anchorOrigin={{
