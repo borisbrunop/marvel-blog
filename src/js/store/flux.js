@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			comicDetails: "",
 			errorCharacter: "",
 			errorComic: "",
-			favsExists: false
+			favsExists: false,
+			cookiesAlert: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -263,6 +264,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			changeSearch: value => {
 				setStore({
 					search: value
+				});
+			},
+			handleCokkiesAlert: value => {
+				setStore({
+					cookiesAlert: value
 				});
 			},
 			loadFavs: () => {

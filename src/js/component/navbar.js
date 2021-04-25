@@ -9,6 +9,23 @@ import { Context } from "../store/appContext";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Cookies from "universal-cookie";
+import { createMuiTheme } from "@material-ui/core/styles";
+
+const custome = createMuiTheme({
+	breakpoints: {
+		values: {
+			smCellphone: 0,
+			lgCellphone: 375,
+			tablet: 575,
+			md: 768,
+			lg: 992,
+			pc: 800,
+			lgPc: 1100,
+			xl: 1200,
+			xlPc: 1920
+		}
+	}
+});
 
 const useStyles = makeStyles(theme => ({
 	typographyPopover: {
@@ -29,7 +46,12 @@ const useStyles = makeStyles(theme => ({
 		height: "41px"
 	},
 	favDiv: {
-		width: "100px"
+		width: "385px",
+		display: "flex",
+		justifyContent: "space-between",
+		[theme.breakpoints.down(custome.breakpoints.values.tablet)]: {
+			width: "290px"
+		}
 	},
 	nameFav: {
 		margin: "10px",
@@ -82,7 +104,7 @@ export const Navbar = () => {
 					}}>
 					{store.favsExists ? (
 						favs.map((name, id) => (
-							<div key={id} className="favs">
+							<div key={id} className={classes.favDiv}>
 								<p onClick={e => history.push(`/details/${name}`)} className={classes.nameFav}>
 									{name}
 								</p>

@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 
 const custome = createMuiTheme({
 	breakpoints: {
@@ -46,12 +47,18 @@ const useStyles = makeStyles(theme => ({
 	},
 	characterP: {
 		cursor: "pointer",
-		width: "270px"
+		width: "100%",
+		textAlign: "center",
+		[theme.breakpoints.up(custome.breakpoints.values.tablet)]: {
+			textAlign: "inherit",
+			marginLeft: "3rem !important"
+		}
 	},
 	moreInfoDiv: {
 		display: "flex",
 		justifyContent: "center"
-	}
+	},
+	divider: {}
 }));
 
 export default function DetailsComic() {
@@ -87,7 +94,7 @@ export default function DetailsComic() {
 						{store.comicDetails &&
 							store.comicDetails.characters.map((character, id) => (
 								<p
-									className={classes.characterP + " ml-5"}
+									className={classes.characterP}
 									onClick={e => history.push(`/details/${character.name}`)}
 									key={id}>
 									{character.name}
@@ -103,8 +110,9 @@ export default function DetailsComic() {
 								if (value.type === "digitalPurchasePrice") {
 									priceType = "Digital purchase price";
 								}
-								return <p className="ml-5" key={id}>{`${priceType}: ${value.price}$`}</p>;
+								return <p className="ml-5 mb-4" key={id}>{`${priceType}: ${value.price}$`}</p>;
 							})}
+						<Divider className={classes.divider} />
 						<div className={classes.moreInfoDiv}>
 							{store.comicDetails &&
 								store.comicDetails.urls.map((value, id) => {

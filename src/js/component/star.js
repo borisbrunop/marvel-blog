@@ -7,12 +7,32 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "universal-cookie";
 import { useParams } from "react-router-dom";
+import { createMuiTheme } from "@material-ui/core/styles";
+
+const custome = createMuiTheme({
+	breakpoints: {
+		values: {
+			smCellphone: 0,
+			lgCellphone: 375,
+			tablet: 575,
+			md: 768,
+			lg: 992,
+			pc: 800,
+			lgPc: 1100,
+			xl: 1200,
+			xlPc: 1920
+		}
+	}
+});
 
 const useStyles = makeStyles(theme => ({
 	favButton: {
 		marginLeft: "auto",
-		marginBottom: "240px",
+		marginBottom: "auto",
 		color: "#ededed"
+		// [theme.breakpoints.down(custome.breakpoints.values.lg)]: {
+		// 	marginBottom: "95px"
+		// }
 	},
 	favButtonDetails: {
 		color: "#ea2323"

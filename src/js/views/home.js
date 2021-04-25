@@ -23,9 +23,12 @@ const custome = createMuiTheme({
 		values: {
 			smCellphone: 0,
 			lgCellphone: 375,
-			tablet: 600,
-			pc: 960,
-			lgPc: 1280,
+			tablet: 575,
+			md: 768,
+			lg: 992,
+			pc: 800,
+			lgPc: 1100,
+			xl: 1200,
 			xlPc: 1920
 		}
 	}
@@ -36,11 +39,25 @@ const useStyles = makeStyles(theme => ({
 		height: "350px",
 		width: "100%",
 		flexDirection: "column",
-		display: "flex"
+		display: "flex",
+		[theme.breakpoints.down(custome.breakpoints.values.lg)]: {
+			height: "190px"
+		}
+	},
+	mediaSearch: {
+		height: "350px",
+		width: "100%",
+		flexDirection: "column",
+		display: "flex",
+		[theme.breakpoints.down(custome.breakpoints.values.lg)]: {
+			height: "230px"
+		},
+		[theme.breakpoints.down(custome.breakpoints.values.tablet)]: {
+			height: "190px"
+		}
 	},
 	container: {
 		height: "100%",
-		overflowY: "scroll",
 		padding: "0px",
 		marginInline: "auto"
 	},
@@ -51,7 +68,8 @@ const useStyles = makeStyles(theme => ({
 		height: "63px",
 		width: "100%",
 		paddingLeft: "10px",
-		alignItems: "center",
+		alignItems: "flex-end",
+		paddingBottom: "5px",
 		display: "flex",
 		color: "#ededed",
 		cursor: "pointer"
@@ -61,11 +79,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	textField: {
 		width: "100%"
-	},
-	favButton: {
-		marginLeft: "auto",
-		marginBottom: "240px",
-		color: "#ededed"
 	},
 	progress: {
 		width: "100%",
@@ -80,19 +93,25 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 	const classes = useStyles();
 	const history = useHistory();
-	const [open, setOpen] = React.useState(false);
+	// const [open, setOpen] = React.useState(false);
 
 	const handleClose = (event, reason) => {
 		if (reason === "clickaway") {
 			return;
 		}
 
-		setOpen(false);
+		actions.handleCokkiesAlert(false);
+	};
+
+	const handleOpen = () => {
+		if (store.cookiesAlert === null) {
+			actions.handleCokkiesAlert(true);
+		}
 	};
 
 	useEffect(() => {
 		actions.loadFavs();
-		setOpen(true);
+		handleOpen();
 	}, []);
 
 	useEffect(
@@ -125,7 +144,7 @@ export const Home = () => {
 					vertical: "bottom",
 					horizontal: "left"
 				}}
-				open={open}
+				open={store.cookiesAlert}
 				autoHideDuration={7000}
 				onClose={handleClose}
 				message="This site is currently using Cookies"
@@ -143,10 +162,10 @@ export const Home = () => {
 						<div className={classes.container + " container-fluid d-flex justify-content-center row"}>
 							{store.prueba &&
 								store.prueba.map((character, id) => (
-									<div key={id} className="col-12 p-0 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+									<div key={id} className=" m-auto col-6 p-0 col-sm-6 col-md-4 col-lg-3 col-xl-2">
 										<Card className={classes.root + " m-2 m-xl-1"}>
 											<CardMedia
-												className={classes.media}
+												className={store.search != "" ? classes.mediaSearch : classes.media}
 												image={character.path}
 												title={character.name}>
 												<Star characterName={character.name} />
