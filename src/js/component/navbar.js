@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	notfavDiv: {
 		width: "100px",
-		height: "40px"
+		height: "41px"
 	},
 	favDiv: {
 		width: "100px"
@@ -77,7 +77,7 @@ export const Navbar = () => {
 						vertical: "top",
 						horizontal: "left"
 					}}>
-					{favs ? (
+					{favs != [] ? (
 						favs.map((name, id) => (
 							<div key={id} className="favs">
 								<p onClick={e => history.push(`/details/${name}`)} className={classes.nameFav}>
@@ -92,7 +92,9 @@ export const Navbar = () => {
 							</div>
 						))
 					) : (
-						<div className="notFavs" />
+						<div className="favs">
+							<p className="mb-0">dont have any favorites characters</p>
+						</div>
 					)}
 				</Popover>
 			</div>
