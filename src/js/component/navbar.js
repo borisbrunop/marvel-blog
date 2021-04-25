@@ -37,6 +37,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	delete: {
 		color: "#ea2323"
+	},
+	logo: {
+		width: "100px"
 	}
 }));
 
@@ -53,7 +56,7 @@ export const Navbar = () => {
 	return (
 		<nav className="navbar navbar-light bg-light">
 			<Link to="/">
-				<img src={logo} />
+				<img className={classes.logo} src="https://cdn.iconscout.com/icon/free/png-256/marvel-282124.png" />
 			</Link>
 			<div className={classes.popover}>
 				<Button
