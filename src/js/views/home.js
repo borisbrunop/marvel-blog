@@ -18,6 +18,7 @@ import Star from "../component/star";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import BackspaceIcon from "@material-ui/icons/Backspace";
 
 const custome = createMuiTheme({
 	breakpoints: {
@@ -36,15 +37,6 @@ const custome = createMuiTheme({
 });
 
 const useStyles = makeStyles(theme => ({
-	// media: {
-	// 	height: "350px",
-	// 	width: "100%",
-	// 	flexDirection: "column",
-	// 	display: "flex",
-	// 	[theme.breakpoints.down(custome.breakpoints.values.lg)]: {
-	// 		height: "190px"
-	// 	}
-	// },
 	mediaSearch: {
 		height: "350px",
 		width: "100%",
@@ -96,6 +88,9 @@ const useStyles = makeStyles(theme => ({
 	SearchIcon: {
 		color: "#ea2323",
 		cursor: "pointer"
+	},
+	snackbar: {
+		background: "#ea2323"
 	}
 }));
 
@@ -122,15 +117,13 @@ export const Home = () => {
 	useEffect(() => {
 		actions.loadFavs();
 		handleOpen();
-	}, []);
-
-	useEffect(() => {
 		actions.loadSomeData();
 	}, []);
+
+	useEffect(() => {}, []);
 
 	const handleRefresh = async () => {
 		await actions.changeSearch("");
-		actions.loadSomeData();
 	};
 
 	const handleSearch = event => {
@@ -160,7 +153,7 @@ export const Home = () => {
 					variant="outlined"
 				/>
 				<IconButton className={classes.refresh} onClick={e => handleRefresh()} aria-label="refesh">
-					<RefreshIcon />
+					<BackspaceIcon />
 				</IconButton>
 			</div>
 			<Snackbar
@@ -171,6 +164,7 @@ export const Home = () => {
 				open={store.cookiesAlert}
 				autoHideDuration={7000}
 				onClose={handleClose}
+				className={classes.snackbar}
 				message="This site is currently using Cookies"
 				action={
 					<>

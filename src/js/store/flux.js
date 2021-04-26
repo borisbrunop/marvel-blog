@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			comicDetails: "",
 			errorCharacter: "",
 			errorComic: "",
-			cookiesAlert: null
+			cookiesAlert: null,
+			autocomplete: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
