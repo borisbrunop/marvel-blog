@@ -29,15 +29,12 @@ const custome = createMuiTheme({
 
 const useStyles = makeStyles(theme => ({
 	media: {
-		height: "220px",
+		height: "255px",
 		width: "100%",
 		flexDirection: "column",
 		display: "flex",
 		[theme.breakpoints.up(custome.breakpoints.values.tablet)]: {
-			height: "350px"
-		},
-		[theme.breakpoints.up(custome.breakpoints.values.lg)]: {
-			height: "350px"
+			height: "425px"
 		}
 	},
 	container: {

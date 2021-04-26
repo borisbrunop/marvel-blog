@@ -102,7 +102,7 @@ export const Navbar = () => {
 						vertical: "top",
 						horizontal: "left"
 					}}>
-					{store.favsExists ? (
+					{store.favs[0] ? (
 						favs.map((name, id) => (
 							<div key={id} className={classes.favDiv}>
 								<p onClick={e => history.push(`/details/${name}`)} className={classes.nameFav}>

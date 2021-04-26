@@ -13,7 +13,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			comicDetails: "",
 			errorCharacter: "",
 			errorComic: "",
-			favsExists: false,
 			cookiesAlert: null
 		},
 		actions: {
@@ -47,6 +46,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 						.then(function(response) {
 							const store = getStore();
+							if (!response.data.data.results[0]) {
+								setStore({
+									prueba: null
+								});
+							}
 							for (let character of response.data.data.results) {
 								let arrayCharacters = character.thumbnail.path.split("/");
 								const found = arrayCharacters.find(el => el === "image_not_available");
@@ -163,38 +167,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 					loadComics: false,
 					errorComic: ""
 				});
+				let count = 0;
 				for await (let comic of comicsUrls) {
-					let arrayUrl = comic.resourceURI.split("/");
-					let url = "https://gateway.marvel.com/v1/public/comics/";
-					Axios.get(`${url}${arrayUrl[6]}`, {
-						params: {
-							apikey: publicKey,
-							ts,
-							hash
-						}
-					})
-						.then(function(response) {
-							let det = response.data.data.results[0];
-							let arrayComics = det.thumbnail.path.split("/");
-							const found = arrayComics.find(el => el === "image_not_available");
-							if (!found) {
-								let oneCharacter = {
-									imgUrl1: det.thumbnail.path + "/portrait_fantastic." + det.thumbnail.extension,
-									name: det.title,
-									id: det.id
-								};
-								setStore({
-									comics: [...store.comics, oneCharacter]
-								});
+					count += 1;
+					if (count <= 9) {
+						let arrayUrl = comic.resourceURI.split("/");
+						let url = "https://gateway.marvel.com/v1/public/comics/";
+						Axios.get(`${url}${arrayUrl[6]}`, {
+							params: {
+								apikey: publicKey,
+								ts,
+								hash
 							}
 						})
-						.catch(function(error) {
-							console.log(error);
-						});
+							.then(function(response) {
+								let det = response.data.data.results[0];
+								let arrayComics = det.thumbnail.path.split("/");
+								const found = arrayComics.find(el => el === "image_not_available");
+								if (!found) {
+									let oneCharacter = {
+										imgUrl1: det.thumbnail.path + "/portrait_fantastic." + det.thumbnail.extension,
+										name: det.title,
+										id: det.id
+									};
+									setStore({
+										comics: [...store.comics, oneCharacter]
+									});
+								}
+							})
+							.catch(function(error) {
+								console.log(error);
+							});
+					}
+					setStore({
+						loadingComics: true
+					});
 				}
-				setStore({
-					loadingComics: true
-				});
 			},
 			comicDetails: id => {
 				let md5 = require("md5");
@@ -278,13 +286,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (!favsCookies) {
 					cookies.set("favs", []);
 					setStore({
-						favs: [],
-						favsExists: false
+						favs: []
 					});
 				} else {
 					setStore({
-						favs: [...favsCookies],
-						favsExists: true
+						favs: [...favsCookies]
 					});
 				}
 			},
@@ -296,8 +302,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (repeated === undefined) {
 					cookies.set("favs", [...favsCookies, character]);
 					setStore({
-						favs: [...favsCookies, character],
-						favsExists: true
+						favs: [...favsCookies, character]
 					});
 				} else {
 					console.log("esta reperito");
@@ -308,13 +313,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const cookies = new Cookies();
 				const store = getStore();
 				const favsCookies = cookies.get("favs");
-				console.log(store.favs.length);
-				console.log(favsCookies.length);
 				if (favsCookies.length === 1) {
 					cookies.set("favs", "not");
 					setStore({
-						favs: [],
-						favsExists: false
+						favs: []
 					});
 				}
 				let finishFavsCookies = favsCookies.filter((fav, i) => i != id);

@@ -36,15 +36,15 @@ const custome = createMuiTheme({
 });
 
 const useStyles = makeStyles(theme => ({
-	media: {
-		height: "350px",
-		width: "100%",
-		flexDirection: "column",
-		display: "flex",
-		[theme.breakpoints.down(custome.breakpoints.values.lg)]: {
-			height: "190px"
-		}
-	},
+	// media: {
+	// 	height: "350px",
+	// 	width: "100%",
+	// 	flexDirection: "column",
+	// 	display: "flex",
+	// 	[theme.breakpoints.down(custome.breakpoints.values.lg)]: {
+	// 		height: "190px"
+	// 	}
+	// },
 	mediaSearch: {
 		height: "350px",
 		width: "100%",
@@ -79,7 +79,9 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing(1)
 	},
 	textField: {
-		width: "100%"
+		width: "100%",
+		border: "1px solid #ea2323",
+		borderRadius: "5px"
 	},
 	refresh: {
 		color: "#ea2323"
@@ -90,6 +92,10 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center"
+	},
+	SearchIcon: {
+		color: "#ea2323",
+		cursor: "pointer"
 	}
 }));
 
@@ -118,36 +124,42 @@ export const Home = () => {
 		handleOpen();
 	}, []);
 
-	useEffect(
-		() => {
-			actions.loadSomeData();
-		},
-		[store.search]
-	);
+	useEffect(() => {
+		actions.loadSomeData();
+	}, []);
 
-	const handleRefresh = () => {
-		const editedText = store.search.slice(0, -1);
-		actions.changeSearch(editedText);
+	const handleRefresh = async () => {
+		await actions.changeSearch("");
+		actions.loadSomeData();
+	};
+
+	const handleSearch = event => {
+		if (event.keyCode === 13) {
+			return actions.loadSomeData();
+		}
+	};
+
+	const handleSearchButton = () => {
+		if (store.search != "") {
+			return actions.loadSomeData();
+		}
 	};
 
 	return (
 		<>
 			<div className="mx-md-5 my-5 mx-2 d-flex">
+				<IconButton className={classes.SearchIcon} onClick={handleSearchButton} aria-label="search">
+					<SearchIcon />
+				</IconButton>
 				<TextField
 					value={store.search}
 					onChange={e => actions.changeSearch(e.target.value)}
+					onKeyDown={e => handleSearch(e)}
 					id="outlined-start-adornment"
 					className={clsx(classes.margin, classes.textField)}
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position="start">
-								<SearchIcon />
-							</InputAdornment>
-						)
-					}}
 					variant="outlined"
 				/>
-				<IconButton className={classes.refresh} onClick={e => handleRefresh()} aria-label="delete">
+				<IconButton className={classes.refresh} onClick={e => handleRefresh()} aria-label="refesh">
 					<RefreshIcon />
 				</IconButton>
 			</div>
@@ -177,7 +189,7 @@ export const Home = () => {
 									<div key={id} className=" m-auto col-6 p-0 col-sm-6 col-md-4 col-lg-3 col-xl-2">
 										<Card className={classes.root + " m-2 m-xl-1"}>
 											<CardMedia
-												className={store.search != "" ? classes.mediaSearch : classes.media}
+												className={classes.mediaSearch}
 												image={character.path}
 												title={character.name}>
 												<Star characterName={character.name} />
